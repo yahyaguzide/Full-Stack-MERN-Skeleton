@@ -7,8 +7,10 @@ import helmet from 'helmet';
 
 import Template from './../template';
 
-// NOTE: import Routes declaration
+// NOTE: Import Routes declaration
 import userRoutes from './routes/user.routes'
+import authRoutes from './routes/auth.routes'
+
 
 const app = express();
 
@@ -18,10 +20,14 @@ app.use(cookieParser());
 app.use(compress());
 app.use(helmet());
 app.use(cors());
-app.use('/', userRoutes)
+
+// NOTE: Mount Routes
+app.use('/', userRoutes);
+app.use('/', authRoutes);
+
 
 app.get('/', (req, res) => {
-    res.status(200).send(Template())
+    res.status(200).send(Template());
 });
 
 export default app;
