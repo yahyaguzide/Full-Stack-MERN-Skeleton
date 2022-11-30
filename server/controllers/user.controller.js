@@ -1,6 +1,6 @@
 import User from '../models/user.model'
 import extend from 'lodash/extend'
-import errorHandler from './error.controller'
+import errorHandler from './../helpers/dbErrorHandler'
 import { json } from 'body-parser'
 import { validate } from 'schema-utils'
 
@@ -17,6 +17,7 @@ const create = async (req, res) => {
             message: "Successfully signed up!"
         })
     } catch(err) {
+        console.log("Error occured while creating: "+ err)
         return res.status(400).json({
             error: errorHandler.getErrorMessage(err)
         })
@@ -28,6 +29,7 @@ const list = async (req, res) => {
         let users = await User.find().select('name email updated created')
         res.json(users)
     } catch(err) {
+        console.log("Error occured while listing: "+ err)
         return res.status(400).json({
             error: errorHandler.getErrorMessage(err)
         })
@@ -41,9 +43,9 @@ const userById = async (req, res, next, id) => {
             return res.status('400').json({
                 error: "User not found"
             })
-            req.profile = user
-            next()
         }
+        req.profile = user
+        next()
     } catch(err) {
         return res.status('400').json({
             error: "Could not retrieve user"

@@ -1,6 +1,7 @@
 import config from "../config/config";
 import app from './express';
 import mongoose from 'mongoose';
+import { MongoClient } from "mongodb";
 
 /* const { MongoClient, ServerApiVersion } = require('mongodb');
 
@@ -15,18 +16,27 @@ client.connect(err => {
     client.close();
 }); */
 
+/*
 try {
     // Connect to the MongoDB cluster
-    mongoose.connect(
+    const con = new MongoClient(
         config.mongoUri,
-        { useNewUrlParser: true, useUnifiedTopology: true },
-        () => console.log(" Mongoose is connected")
+        { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 }
     );
+
+    client.connect(err => {
+        if(err) {
+            console.log(err)
+        } else {
+            console.log("mongoose conected")
+        }
+    })
 } catch (e) {
     console.log("could not connect");
 }
+*/
 
-/* mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise;
 mongoose.connect(config.mongoUri, { 
     useNewUrlParser: true,
     userCreateIndex: true,
@@ -36,9 +46,9 @@ const conn = mongoose.connection;
 
 conn.on('error', () => {
     throw new Error("unable to connect to database: ${config.mongoUri}");
-}); */
+});
 
-app.listen(config.port, (err) => {
+app.listen(config.port, function(err) {
     if(err) {
         console.log(err);
     }

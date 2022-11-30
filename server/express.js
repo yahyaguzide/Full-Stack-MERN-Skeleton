@@ -25,6 +25,12 @@ app.use(cors());
 app.use('/', userRoutes);
 app.use('/', authRoutes);
 
+app.get('/', (req, res) => {
+    res.status(200).send(Template());
+});
+
+// NOTE: To catch express-jwt errors
+// express-jwt throws a UnauthorizedError if it can't validate token
 app.use((err, req, res, next) => {
     if(err.name === 'UnauthorizedError'){
         res.status(401).json({"error": err.name + ": " + err.message })
@@ -34,9 +40,5 @@ app.use((err, req, res, next) => {
     }
 })
 
-
-app.get('/', (req, res) => {
-    res.status(200).send(Template());
-});
 
 export default app;

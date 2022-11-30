@@ -1,7 +1,7 @@
 import User from '../models/user.model'
 import jwt from 'jsonwebtoken'
-import expressJwt from 'express-jwt'
-import config from '../../config/config'
+import { expressjwt, ExpressJwtRequest } from "express-jwt";
+import config from './../../config/config'
 
 const signin = async (req, res) => {
     try {
@@ -44,12 +44,16 @@ const singout = (req, res) => {
     })
 }
 
-const requireSignin = expressJwt({
+const requireSignin = expressjwt({
     secret: config.jwtSecret,
-    userProperty: 'auth'
+    userProperty: 'auth',
+    algorithms: ['SHA1']
 })
 
 const hasAuthorization = (req, res, next) => {
+    // If the req.profile is not null and req.auth is not null and the id of the user to be changes is the same as the authenticated user
+    // NOTE: req.auth object is populated by express-jwt
+    // NOTE: req.profile is populated by userByID function
     const authorized = req.profiles && req.auth && req.profile._id == req.auth._id
     if(!authorized) {
         return res.status('403').json({

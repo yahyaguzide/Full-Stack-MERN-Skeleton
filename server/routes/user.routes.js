@@ -5,14 +5,14 @@ import authCtrl from "../controllers/auth.controller";
 const router = express.Router();
 
 router.route('/api/users')
-    .get(userCtl.list)
-    .post(userCtl.create)
+    .get(userCtrl.list)
+    .post(userCtrl.create)
 
 /*
 router.route('/api/users/:userId')
-    .get(userCtl.read)
-    .put(userCtl.update)
-    .delete(userCtl.remove)
+    .get(userCtrl.read)
+    .put(userCtrl.update)
+    .delete(userCtrl.remove)
 */
 
 router.route('/api/users/:userId')
@@ -20,6 +20,6 @@ router.route('/api/users/:userId')
     .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.update)
     .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.remove)
 
-router.param('userId', userCtl.userById)
+router.param('userId', userCtrl.userById)
 
 export default router
